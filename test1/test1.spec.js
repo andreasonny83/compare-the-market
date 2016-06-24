@@ -3,16 +3,6 @@ var chaiAsPromised = require('chai-as-promised');
 var expect = chai.expect;
 
 var test1 = require('./test1');
-var mockResult = [
-  {word: 'again', repetitions: 1},
-  {word: 'everybody', repetitions: 1},
-  {word: 'this', repetitions: 1},
-  {word: 'is', repetitions: 1},
-  {word: 'a', repetitions: 1},
-  {word: 'test', repetitions: 1},
-  {word: 'file', repetitions: 1},
-  {word: 'hello', repetitions: 3}
-];
 
 chai.use(chaiAsPromised);
 
@@ -31,16 +21,45 @@ describe('Test1: Read all the uniques words contained ' +
   });
 
   describe('UAT2: Read words from file', function() {
+    var results;
+
+    before(function() {
+      results = test1('test1/mock_tests');
+    });
+
     it('Should read a list of words', function() {
-      return expect(test1('test1/mock_tests'))
-        .to.eventually.deep.equal(mockResult);
+      return results.then(function(val) {
+        expect(val).to.have.property('again');
+        expect(val).to.have.property('hello');
+      });
+    });
+
+    it('And each word should havea `repetitions` ' +
+        'and a `prime` property', function() {
+      return results.then(function(val) {
+        expect(val.again).to.have.property('repetitions')
+          .and.to.equal(1);
+
+        expect(val.again).to.have.property('prime')
+          .and.to.equal(false);
+      });
+    });
+
+    it('verify that 3 is a prime number', function() {
+      return results.then(function(val) {
+        expect(val.hello).to.have.property('repetitions')
+          .and.to.equal(3);
+
+        expect(val.hello).to.have.property('prime')
+          .and.to.equal(true);
+      });
     });
   });
 
-  describe('UAT3: use a different encoding', function() {
-    it('Should return a differnet result', function() {
-      return expect(test1('test1/mock_tests', {encoding: 'hex'}))
-        .not.to.eventually.deep.equal(mockResult);
+  describe('UAT3: test functions', function() {
+    it('Function: countWords, Should ignore punctuation', function() {
+      console.log(test1);
+      var countWords = new test1.countUniqueWords('test1/mock_tests');
     });
   });
 });

@@ -4,8 +4,9 @@
   "description": "Technical Test for CompareTheMarket.com",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint .",
-    "test": "mocha **/*.spec.js --reporter mochawesome --recursive --reporter-options reportDir=reports,reportName=reports"
+    "lint": "eslint **/*.js",
+    "test": "npm run lint && mocha **/*.spec.js --reporter mochawesome --recursive --reporter-options reportDir=reports,reportName=reports && cd reports && open reports.html",
+    "demo:test1": "node test1/demo"
   },
   "repository": {
     "type": "git",

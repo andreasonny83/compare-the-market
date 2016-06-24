@@ -1,6 +1,7 @@
 'use strict';
 
 var fs = require('fs');
+var isPrime = require('./is-prime');
 
 /**
  * [CountUniqueWords description]
@@ -97,25 +98,30 @@ CountUniqueWords.prototype.countWords = function(line) {
  */
 CountUniqueWords.prototype.printResult = function(resolve) {
   var self = this;
-
+  var results = {};
   var keysSorted = Object.keys(self._uniqueWords)
         .sort(function(a, b) {
           return self._uniqueWords[a] - self._uniqueWords[b];
         });
 
-  // return the promise back with the uniqueWords
-  resolve(keysSorted.map(function(val) {
-    return {
-      word: val,
-      repetitions: self._uniqueWords[val]
+  keysSorted.forEach(function(val) {
+    results[val] = {
+      repetitions: self._uniqueWords[val],
+      prime: isPrime(self._uniqueWords[val])
     };
-  }));
+  });
+
+  // return the promise back with the uniqueWords
+  resolve(results);
 };
 
 module.exports = function(filepath, options) {
+// exports.default = function(filepath, options) {
   var countUniqueWords = new CountUniqueWords(filepath, options);
 
   return new Promise(function(resolve, reject) {
     countUniqueWords.readDir(resolve, reject);
   });
 };
+
+exports.countUniqueWords = 'CountUniqueWords';
