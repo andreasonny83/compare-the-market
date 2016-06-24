@@ -4,14 +4,15 @@
   "description": "Technical Test for CompareTheMarket.com",
   "main": "index.js",
   "scripts": {
-    "test": "mocha *.spec.js --reporter mochawesome --recursive --reporter-options reportDir=reports,reportName=reports"
+    "lint": "eslint .",
+    "test": "mocha **/*.spec.js --reporter mochawesome --recursive --reporter-options reportDir=reports,reportName=reports"
   },
   "repository": {
     "type": "git",
     "url": "git+https://andreasonny83@github.com/andreasonny83/compare-the-market.git"
   },
   "engines": {
-    "node": ">=0.12"
+    "node": ">= 0.12"
   },
   "author": "Andrea Sonny <andreasonny83@gmail.com> (https://github.com/andreasonny83)",
   "license": "MIT",
@@ -21,6 +22,9 @@
   "homepage": "https://github.com/andreasonny83/compare-the-market#readme",
   "devDependencies": {
     "chai": "^3.5.0",
+    "chai-as-promised": "^5.3.0",
+    "eslint": "^2.13.1",
+    "eslint-config-google": "^0.6.0",
     "mocha": "^2.5.3",
     "mochawesome": "^1.3.5"
   },
