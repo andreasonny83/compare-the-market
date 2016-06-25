@@ -1,3 +1,5 @@
+'use strict';
+
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 var expect = chai.expect;
@@ -56,10 +58,50 @@ describe('Test1: Read all the uniques words contained ' +
     });
   });
 
-  describe('UAT3: test functions', function() {
-    it('Function: countWords, Should ignore punctuation', function() {
-      console.log(test1);
-      var countWords = new test1.countUniqueWords('test1/mock_tests');
+  describe('UAT3: countWords', function() {
+    var countWords = test1.countWords('HELLO, world;hello');
+
+    it('Should ignore punctuation', function() {
+      expect(Object.keys(test1.countWords('..hello!!:')).length).to.equal(1);
+
+      expect(test1.countWords('..hello!!:')).to.have.property('hello');
+      expect(test1.countWords('!hello')).to.have.property('hello');
+      expect(test1.countWords('"hello"')).to.have.property('hello');
+      expect(test1.countWords('"hello"')).to.have.property('hello');
+    });
+
+    it('Should be case insensitive', function() {
+      expect(test1.countWords('HELLO')).to.have.property('hello');
+      expect(test1.countWords('HeLlO')).to.have.property('hello');
+      expect(test1.countWords('Hello')).to.have.property('hello');
+    });
+
+    it('Should return only unique words', function() {
+      expect(test1.countWords('HELLO, world'))
+        .to.have.property('hello');
+
+      expect(test1.countWords('HELLO, world'))
+        .to.have.property('world');
+
+      expect(test1.countWords('HELLO, world;hello'))
+        .to.have.property('world');
+
+      expect(Object.keys(countWords).length)
+        .to.equal(2);
+    });
+
+    it('Should count the words in a string', function() {
+      expect(test1.countWords('HELL0, world;hello').hello)
+        .to.equal(1);
+
+      expect(test1.countWords('HELLO, world;hello').hello)
+        .to.equal(2);
+
+      expect(test1.countWords('HELLO, world;hello').hello)
+        .to.equal(2);
+
+      expect(test1.countWords('HELLO, world;hello-- HELLO').hello)
+        .to.equal(3);
     });
   });
 });

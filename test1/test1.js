@@ -51,7 +51,7 @@ CountUniqueWords.prototype.readDir = function(resolve, reject) {
         while (index > -1) {
           line = remaining.substring(0, index);
           remaining = remaining.substring(index + 1);
-          self.countWords(line);
+          self._uniqueWords = self.countWords(line);
           index = remaining.indexOf('\n');
         }
       })
@@ -59,7 +59,7 @@ CountUniqueWords.prototype.readDir = function(resolve, reject) {
         fileIndex--;
 
         if (remaining.length > 0) {
-          self.countWords(remaining);
+          self._uniqueWords = self.countWords(remaining);
         }
 
         if (!fileIndex) {
@@ -74,21 +74,24 @@ CountUniqueWords.prototype.readDir = function(resolve, reject) {
  * Count the unique words contained in the file stream
  * and store them in the uniqueWords Object
  *
- * @param  {Object} line  The chunk file coming from the read stream
+ * @param  {Object} line          The chunk file coming from the read stream
+ *
+ * @return {Object} uniqueWords   Return the total unique words
  */
 CountUniqueWords.prototype.countWords = function(line) {
   var self = this;
-
-  var words = line.match(/(?!\d)(\w+\b)(?!.*\1)/g, '');
+  var uniqueWords = self._uniqueWords || {};
+  var words = line.match(/(?!\d)(\w+\b)/g, '');
   var word;
   var i;
-
   for (i = 0; words ? i < words.length : 0; i++) {
     word = words[i].toLowerCase();
 
-    self._uniqueWords[word] = self._uniqueWords[word] ?
-      self._uniqueWords[word] += 1 : 1;
+    uniqueWords[word] = uniqueWords[word] ?
+      uniqueWords[word] += 1 : 1;
   }
+
+  return uniqueWords;
 };
 
 /**
@@ -115,8 +118,8 @@ CountUniqueWords.prototype.printResult = function(resolve) {
   resolve(results);
 };
 
+// Default export module
 module.exports = function(filepath, options) {
-// exports.default = function(filepath, options) {
   var countUniqueWords = new CountUniqueWords(filepath, options);
 
   return new Promise(function(resolve, reject) {
@@ -124,4 +127,8 @@ module.exports = function(filepath, options) {
   });
 };
 
-exports.countUniqueWords = 'CountUniqueWords';
+// countUniqueWords module
+module.exports.countWords = function(words) {
+  return CountUniqueWords.prototype.countWords
+    .call({_uniqueWords: {}}, words);
+};
