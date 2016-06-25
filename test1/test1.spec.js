@@ -17,8 +17,7 @@ describe('Test1: Read all the uniques words contained ' +
     });
 
     it('A wrong folder, should return an error.', function() {
-      return expect(test1('abc')).to.eventually
-        .be.rejectedWith('no such file or directory');
+      return expect(test1('abc')).to.eventually.be.rejected;
     });
   });
 

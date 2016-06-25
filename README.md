@@ -1,6 +1,8 @@
 # compare-the-market
 
-JavaScript tests
+> JavaScript tests
+
+[![Build Status](https://travis-ci.org/andreasonny83/compare-the-market.svg?branch=master)](https://travis-ci.org/andreasonny83/compare-the-market)
 
 ## Installation
 
