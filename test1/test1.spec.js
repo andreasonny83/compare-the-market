@@ -12,12 +12,12 @@ describe('Test1: Read all the uniques words contained ' +
   'in a text file', function() {
   describe('UAT1: Error cases', function() {
     it('A missing folder, should return an error.', function() {
-      return expect(test1()).to.eventually
+      return expect(test1('', 'stream')).to.eventually
         .be.rejectedWith('No folder specified.');
     });
 
-    it('A wrong folder, should return an error.', function() {
-      return expect(test1('abc')).to.eventually.be.rejected;
+    it('A missing folder, should return an error.', function() {
+      expect(test1()).to.equal(false);
     });
   });
 
@@ -25,7 +25,7 @@ describe('Test1: Read all the uniques words contained ' +
     var results;
 
     before(function() {
-      results = test1('test1/mock_tests');
+      results = test1('test1/mock_tests/test.txt', 'stream');
     });
 
     it('Should read a list of words', function() {
@@ -99,7 +99,7 @@ describe('Test1: Read all the uniques words contained ' +
       expect(test1.countWords('HELLO, world;hello').hello)
         .to.equal(2);
 
-      expect(test1.countWords('HELLO, world;hello-- HELLO').hello)
+      expect(test1.countWords('HELLO, world;hello-HELLO').hello)
         .to.equal(3);
     });
   });

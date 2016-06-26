@@ -23,8 +23,14 @@ npm install
 
 ## About the tests
 
+The code for the 2 tests is written in JavaScript ES2015 to grant a support
+with NodeJS versions [>= 0.12](https://nodejs.org/en/blog/release/v0.12.0/).
+
+All the unit tests are written in [Mocha](https://mochajs.org/) +
+[Chai](http://chaijs.com/).
+
 There are 2 folders named `test1` and `test2` inside this project.
-Each of them contains a JavaScript module, a unit test and an demo file
+Each of them contains some JavaScript modules, unit tests and an demo file
 ready to be run in your terminal.
 
 ### Running the demos
@@ -33,7 +39,9 @@ Each demo for the 2 test modules can be run from the root project folder
 running:
 
 ```sh
-npm run demo:test1
+npm run demo:test1 SYNC # Read the file in a synchronous way
+npm run demo:test1 ASYNC # Read the file in asynchronous way
+npm run demo:test1 STREAM # Read the file using stream of chunk data
 ```
 
 and
